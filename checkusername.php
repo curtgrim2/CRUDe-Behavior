@@ -4,26 +4,27 @@
 </head>
 
 <body>
-<?php
 
+<?php
 $conn = mysqli_connect("localhost","root");
 
-$username = $_REQUEST['username2'];
-/*
-$sql = "SELECT 'username' FROM testdb3.testtable3";
-
-if(mysqli_query($conn,$sql)){
-  echo "<h3>  ABLITY TO RETRIEVE SUCCESSFUL.</h3>";
-
-  echo nl2br($username);
-}
-else{
-  echo "ERROR: $sql. ". mysqli_error($conn);
-}
-*/
-
+$username = $_REQUEST['username_2'];
 
 $sql = "SELECT username FROM testdb3.testtable3 WHERE username = '$username'";
+
+/*
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("s", $_GET['q']);
+$stmt->execute();
+$stmt->store_result();
+$stmt->bind_result($username);
+$stmt->fetch();
+$stmt->close();
+
+echo "<div> sss </div>  ";
+*/
+
+$theresponse = "";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0 ) {
@@ -32,12 +33,7 @@ else {
   echo "Username not in use!";
 }
 mysqli_close($conn);
-
-
-
  ?>
 
 </body>
-
-
 </html>
