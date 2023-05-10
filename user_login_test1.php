@@ -228,7 +228,7 @@ function update4User(){
   var newpass = $("#newpass").val();
 
 
-alert(olduser + "," + newuser + "," + oldpass + "," + newpass + ","); //newpass.value
+//alert(olduser + "," + newuser + "," + oldpass + "," + newpass + ","); //newpass.value
   $.ajax({
     type:'POST',
     url:'user_update.php?olduser='+olduser+'&newuser='+newuser+ '&oldpass=' + oldpass+ '&newpass='+newpass, //'user_update.php',////
@@ -239,8 +239,9 @@ alert(olduser + "," + newuser + "," + oldpass + "," + newpass + ","); //newpass.
       newpass:newpass
     },*/
     success: function(response){
-      //$()
-      alert(response);
+    
+      //alert(response);
+      $("#updatestatus").html(response);
     }
 
   })
@@ -338,6 +339,7 @@ New Username:
 
 <input type = "button"  id = "passchangeb" value = "Change Password" class = "clickbutton" onclick = "update4User()"/>
 <!--<button id = "passchangeb" value = "Change Password" class = "clickbutton">  </button> -->
+<div id = "updatestatus"></div>
 </div>
 
 </div> <!--For .overall div -- >
