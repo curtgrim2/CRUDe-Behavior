@@ -26,8 +26,24 @@
               $password = $_REQUEST['password'];
 
 
-              // Performing insert query execution
-              // here our table name is college
+              if($username === "" || $password === ""){
+                echo "Empty! Please enter username AND passwords.";
+                exit;
+              }
+
+
+//Check to see if username is already taken.
+              $sql = "SELECT username FROM testdb3.testtable3 WHERE username = '$username'";
+
+              $result = $conn->query($sql);
+
+              if ($result->num_rows > 0 ) {
+                echo "Username already exists. Please create a different username.";
+                exit;
+              }
+
+
+
               $sql = "INSERT INTO testdb3.testtable3  VALUES ('$username',
                   '$password')";
 
