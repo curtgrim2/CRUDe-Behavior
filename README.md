@@ -12,3 +12,5 @@ Can check if username(account) already exist and thereafter sends email to recov
 Ability to update the username + password
 
 Ability to delete the acccount (Have a pop to ask again if user wants to delete account)
+
+(Used alongside XAMPP Control Panel and MySQL Workbench)
