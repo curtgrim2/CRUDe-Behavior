@@ -18,8 +18,17 @@
 
   }
 
+  form{
+    /*background-color: pink;
+    box-sizing:border-box;*/
+    }
+
   h1, h2{
     text-align: center;
+  }
+
+  .fadedtext{
+    opacity: .5;
   }
 
 
@@ -44,6 +53,7 @@
     position:absolute;
     top:10%;
     left:20%;
+
   }
 
   .deletebox{
@@ -93,6 +103,10 @@
     cursor:pointer;
   }
 
+  #passchangeb{
+    display:none;
+  }
+
 
 .updatebox{
   background-color: lightblue;
@@ -100,8 +114,11 @@
   color:black;
   position:absolute;
   width:25%;
-  height:33%;
-  visibility: hidden;
+  height:50%;
+  /*height:90%;*/
+  position:relative;
+  left:70%
+  /*visibility: hidden;*/
 }
   #answer{
     color:white;
@@ -150,6 +167,20 @@ VALUES
 
 <script type="text/javascript">
 //document.getElementbyId("checksubmit").onclick = function(){loadUp2AJAX()};
+
+$(document).ready(function(){
+  $('#enablepass').click(function(){
+    //  var disabled1 = $("oldpass").removeAttr('disabled');
+    //  var disabled2 = $("newpass").removeAttr('disabled');
+$("#oldpass").removeAttr('disabled');
+$("#newpass").removeAttr('disabled');
+//$("#enablepass").hide();
+$("#passchangeb").css("display","block");
+$(".fadedtext").css("opacity", "1");
+  })
+});
+
+
 function loadUp1(){
      var username=$('#username').val();
      var password = $('#password').val();
@@ -166,42 +197,7 @@ function loadUp1(){
          .fail(function(){ alert("something went wrong. Please try again") });
  }
 
-
-function loadUp2(){
-     var username2=$('#username2').val();
-     $.get("checkusername.php",'username2='+username2,function(result,status,xhr) {
-             if( status.toLowerCase()=="error".toLowerCase() )
-             { alert("An Error Occurred.."); }
-             else {
-
-                 alert(result);
-                 $('#answer').html(result);
-             }
-         })
-         .fail(function(){ alert("something went wrong. Please try again") });
- }
-/*
-$(function() {
-    $( "#checksubmit" ).on( "click", function() {
-        alert("clicked");
-    });
-});*/
-
-/*$(function() {
-  $("#deletebut").on("click",function(){
-      var username3 = $("#username3").val();
-      var password3 = $("#password").val();
-
-    $.post()
-
-
-  })
-
-});*/ /*Create 2nd button/function that precedes this that unveils a div
-  in front of the screen and asks user if they're sure. From then THAT button in THAT div will trigger this function*/
-
 function loadUp2AJAX(){
-
 //var username2 = document.getElementbyId("usernameout"); //wON'T WORK HERE; This is a javascript function not a jGrasp on
  var username2=$('#usernameout').val();
   if(usernameout)
@@ -218,14 +214,60 @@ function loadUp2AJAX(){
    }
    });
   }
-
   else
   {
-   $( '#answer' ).html("Please Enter Some Words");
+   $( '#answer' ).html("Please Enter Some Words");  //Does this work?
   }
+}
+
+function update4User(){
+
+  var olduser = $("#olduser").val();
+  var newuser = $("#newuser").val();
+  var oldpass = $("#oldpass").val();
+  var newpass = $("#newpass").val();
+
+
+alert(olduser + "," + newuser + "," + oldpass + "," + newpass + ","); //newpass.value
+  $.ajax({
+    type:'POST',
+    url:'user_update.php?olduser='+olduser+'&newuser='+newuser+ '&oldpass=' + oldpass+ '&newpass='+newpass, //'user_update.php',////
+   /*data:{
+      olduser:olduser,
+      newuser:newuser,
+      oldpass: oldpass,
+      newpass:newpass
+    },*/
+    success: function(response){
+      //$()
+      alert(response);
+    }
+
+  })
+
 
 }
 
+/*
+
+$("#passchangeb").click(function(){
+
+  var olduser = $("#olduser").val();
+  var newuser = $("#newuser").val();
+  var oldpass = $("#oldpass").val();
+  var newuser = $("#newpass").val();
+  $.post("user_update.php",
+  {
+    olduser:olduser,
+    newuser:newuser,
+    oldpass: oldpass,
+    newpass:newpass
+  },
+  function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+});
+*/
 </script>
 
 
@@ -278,8 +320,24 @@ function loadUp2AJAX(){
 
 <div class = "updatebox">
 <h2>Update username or password?  </h2>
-<input type = "text" />
+Old Username:
+<input type = "text" id = "olduser"/>
+<br>
+New Username:
+<input type = "text" id = "newuser"/>
 
+<input type = "button" id = "userchangeb" value = "Change Username" class = "clickbutton"/>
+<br>
+<h3 > Change Password?  <input type = "radio"  id ="enablepass"/> </h3>
+<span class = "fadedtext">Old Password: </span>
+<input type = "password" id = "oldpass" disabled/>
+
+<br>
+<span class = "fadedtext"> New Password: </span>
+<input type = "password" id ="newpass" disabled/>
+
+<input type = "button"  id = "passchangeb" value = "Change Password" class = "clickbutton" onclick = "update4User()"/>
+<!--<button id = "passchangeb" value = "Change Password" class = "clickbutton">  </button> -->
 </div>
 
 </div> <!--For .overall div -- >
