@@ -27,8 +27,10 @@
     text-align: center;
   }
 
-  .fadedtext{
-    opacity: .5;
+  .fadedtext1, .fadedtext2{
+    opacity: 1;
+    /*visibility: hidden;*/
+    /*display:none;*/
   }
 
 
@@ -50,15 +52,28 @@
     height:33%;
     margin-left: auto;
     margin-right: auto;
-    position:absolute;
-    top:10%;
-    left:20%;
+    position:relative;
+    top:0%;
+    right:20%;
 
+  }
+
+  .checkuserbox{
+    text-shadow: 2px 2px 1px black;
+    background-color:tan; /*#c7c0a5;*/
+    border:white 3px solid;
+    width:25%;
+    height:33%;
+    position:absolute;
+    /*top:62.5%;
+    left:25%;*/
+    top:40%;
+    right:40%;
   }
 
   .deletebox{
     color:white;
-    background-color:black;
+    background-color:black;/*#a86a6c;*/
     text-shadow:0px 0px 0px white;
     border:red 3px solid;
     width:25%;
@@ -69,6 +84,21 @@
     top:70%;
     left:55%;
 
+  }
+
+
+  .updatebox{
+    background-color: #dff7f7;
+    border: 3px solid blue;
+    color:black;
+    position:absolute;
+    width:25%;
+    height:50%;
+    /*height:90%;*/
+    position:relative;
+    left:70%;
+    bottom:35%;
+    /*visibility: hidden;*/
   }
 
   .accounts{
@@ -86,42 +116,54 @@
 
   }
 
-  .checkuserbox{
-    text-shadow: 2px 2px 1px black;
-    background-color: tan;
-    border:white 3px solid;
-    width:25%;
-    height:33%;
-    position:absolute;
-    /*top:62.5%;
-    left:25%;*/
-    top:40%;
-    right:40%;
-  }
-
   .clickbutton{
     cursor:pointer;
   }
 
   #passchangeb{
-    display:none;
+    /*display:none;*/
   }
 
-
-.updatebox{
-  background-color: lightblue;
-  border: 3px solid blue;
-  color:black;
-  position:absolute;
-  width:25%;
-  height:50%;
-  /*height:90%;*/
-  position:relative;
-  left:70%
-  /*visibility: hidden;*/
-}
   #answer{
     color:white;
+  }
+
+  #rusure{
+    background-color:black;
+    width:50%;
+    height:50%;
+    position:absolute;
+    bottom:25%;
+    left:25%;
+    border:white 3px solid;
+    text-align:center;
+
+    visibility: hidden;
+        /*Have surrounding screen fade into "black opacity"*/
+  }
+
+  #credhelp{
+    background-color: black;
+    color:white;
+    border-radius: 50%;
+    width:7%;
+    height:9%;
+    font-size:100%;
+    text-align:center;
+    cursor:default;
+    position:absolute;
+    left:85%;
+  }
+
+  #credentialstatus{
+    font-size: .7em;
+    color:red;
+  }
+
+  .popupbutton{
+    width:25%;
+    height:25%;
+    cursor:pointer;
   }
 
   </style>
@@ -167,18 +209,46 @@ VALUES
 
 <script type="text/javascript">
 //document.getElementbyId("checksubmit").onclick = function(){loadUp2AJAX()};
-
+/*
 $(document).ready(function(){
   $('#enablepass').click(function(){
-    //  var disabled1 = $("oldpass").removeAttr('disabled');
-    //  var disabled2 = $("newpass").removeAttr('disabled');
-$("#oldpass").removeAttr('disabled');
-$("#newpass").removeAttr('disabled');
+
+//$("#oldpass").removeAttr('disabled');
+//$("#newpass").removeAttr('disabled');
 //$("#enablepass").hide();
-$("#passchangeb").css("display","block");
-$(".fadedtext").css("opacity", "1");
+//$("#passchangeb").css("display","block");
+$(".fadedtext2").css("opacity", "1");
   })
 });
+*/
+
+function checkCheckbox1(){
+
+  if($("#enableuser").prop("checked")){
+    //  alert("Checked");
+      $(".fadedtext1").css("opacity","1");
+      $("#newuser").removeAttr('disabled');
+  }
+
+  else{
+    //  alert("uNCHECKED");
+    $(".fadedtext1").css("opacity",".5");
+    $("#newuser").attr('disabled','disabled');
+  }
+}
+
+
+function checkCheckbox2(){
+if ($("#enablepass").prop("checked")){
+  $(".fadedtext2").css("opacity","1");
+  $("#newpass").removeAttr('disabled');
+}
+else{
+  $(".fadedtext2").css("opacity",".5");
+  $("#newpass").attr('disabled','disabled');
+}
+}
+
 
 
 function loadUp1(){
@@ -220,6 +290,15 @@ function loadUp2AJAX(){
   }
 }
 
+function usernamecred(){
+  var username = $("#username").val();
+  var password = $("#password").val();
+
+  //alert("Did this work:" + username + password);
+  return;
+  alert("Should stop");
+}
+
 function update4User(){
 
   var olduser = $("#olduser").val();
@@ -229,6 +308,8 @@ function update4User(){
 
 
 //alert(olduser + "," + newuser + "," + oldpass + "," + newpass + ","); //newpass.value
+
+//if($("enableuser").prop("checked") && $("enablepass").prop("checked")){
   $.ajax({
     type:'POST',
     url:'user_update.php?olduser='+olduser+'&newuser='+newuser+ '&oldpass=' + oldpass+ '&newpass='+newpass, //'user_update.php',////
@@ -239,13 +320,75 @@ function update4User(){
       newpass:newpass
     },*/
     success: function(response){
-    
+
       //alert(response);
       $("#updatestatus").html(response);
     }
+  }) }
+/*
+  else{
+    alert("CHECK BOTH PLEASE");
+  }*/
 
-  })
+  /*else if($("enablepass").prop("checked")&& $("enableuser").prop("unchecked")){
+    $.ajax({
+      type:'POST',
+      url:'user_update.php?'
+    })
+  }
 
+  else{
+
+  }*/
+
+
+//}
+
+$(document).ready(function(){
+  $("#firstbox").submit(function(e){
+
+  //  var username = $("#username").val();
+    var password = $("#password").val();
+
+    var username = document.getElementById("username").value;
+
+var regex = /[^a-zA-Z0-9 ]/;
+var notvalid = regex.test(username);
+//Next step is to read username value and based off of that do e.preventDefault
+  if(notvalid){
+  $("#credentialstatus").html("NO SPECIAL CHARACTERS OR SPACES");
+    e.preventDefault();
+  }
+
+
+if(username.length < 5){
+$("#credentialstatus").html("Not enough characters! Must be at least 5");
+  e.preventDefault();
+}
+else if(username.length >15){
+  $("#credentialstatus").html("Over 15 characters; Too many! ")
+  e.preventDefault();
+}
+/*
+switch (true){
+
+case username.length < 5:
+  alert("MORE CHARACTERS");
+case username.length>15:
+    alert("Too little characters");
+default:
+    alert("YAYYYY");
+
+  }
+  */
+
+
+  });
+});
+
+
+
+function deleteCheck(){
 
 }
 
@@ -279,16 +422,19 @@ $("#passchangeb").click(function(){
 <div class = "createbox">
   <h1>Enter credentials to verify if account exists </h1>
 
-
-<form onsubmit="" action = "mainuser_login_test.php" method = "post" name = "firstbox"> <!--Have the action filled out if you want page redirect to  the php-->
+<div id = "credhelp" title ="At least 5 characters + no more than 15 and no special characters">?</div>
+<form id = "firstbox" onsubmit="" action = "mainuser_login_test.php" method = "post" > <!--Have the action filled out if you want page redirect to  the php-->
 <div> Add Username: </div>
 <input id = "username" type = "text" name = "username"/>
 <br/>
 <div> Add Password: </div>
 <input id = "password" type = "password" name = "password"/>
 
-<input class = "clickbutton" type = "submit" value = "Submit" />
+<input class = "clickbutton" type = "submit" value = "Submit" onclick = "usernamecred()"/>
+<div id = "credentialstatus">   </div>
 </form>
+
+
 </div>
 
 <!--<form name = "box2" method = "get" onsubmit="loadUp2AJAX();" action = "">
@@ -314,33 +460,48 @@ $("#passchangeb").click(function(){
 <div class = "checkuserbox">
   <h2>Does the following username exist?</h2>
 <input type = "text" id = "usernameout"/>
-<div id = "answer"> ...</div>
+<div id = "answer"> </div>
 <button id =  "checksubmit" class = "clickbutton" onclick = "loadUp2AJAX()"> Lets Check</button>
 </div>
 
 
 <div class = "updatebox">
 <h2>Update username or password?  </h2>
-Old Username:
+ Username:
 <input type = "text" id = "olduser"/>
-<br>
-New Username:
-<input type = "text" id = "newuser"/>
-
-<input type = "button" id = "userchangeb" value = "Change Username" class = "clickbutton"/>
-<br>
-<h3 > Change Password?  <input type = "radio"  id ="enablepass"/> </h3>
-<span class = "fadedtext">Old Password: </span>
-<input type = "password" id = "oldpass" disabled/>
+<span>Password:
+<input type = "password" id = "oldpass" /></span>
 
 <br>
-<span class = "fadedtext"> New Password: </span>
-<input type = "password" id ="newpass" disabled/>
 
-<input type = "button"  id = "passchangeb" value = "Change Password" class = "clickbutton" onclick = "update4User()"/>
+<br>
+<!--<input type = "button" id = "userchangeb" value = "Change Username" class = "clickbutton"/> -->
+
+
+<!--
+<span > Change Username  <input type = "checkbox"  id ="enableuser" onclick ="checkCheckbox1()"/> </span>
+<span > Change Password  <input type = "checkbox"  id ="enablepass" onclick ="checkCheckbox2()"/> </span>
+-->
+
+
+<div class = "fadedtext1"> New Username:
+<input type = "text" id = "newuser"  /></div>
+<div class = "fadedtext2"> New Password:
+<input type = "password" id ="newpass" /> </div>
+
+<input type = "button"  id = "passchangeb" value = "Update credential(s)" class = "clickbutton" onclick = "update4User()"/>
 <!--<button id = "passchangeb" value = "Change Password" class = "clickbutton">  </button> -->
+
 <div id = "updatestatus"></div>
 </div>
+
+
+<div id = "rusure">
+<h1>Are you sure you want to delete (username)'s account?</h1>
+<button class = "popupbutton" >Yes, delete account </button>
+<button class = "popupbutton" >Go back</button>
+</div>
+
 
 </div> <!--For .overall div -- >
 </body>
