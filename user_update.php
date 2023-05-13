@@ -31,6 +31,24 @@ if ($result->num_rows <= 0){
 }
 
 
+//Now lets check if the user name already exists.
+
+$sql = "SELECT username FROM testdb3.testtable3 WHERE username = '$newuser'";
+
+
+$result = $conn->query($sql);
+
+
+if ($result->num_rows > 0 ) {
+  echo "Username already exists. Please try a different one!";
+exit;
+}
+
+
+
+
+
+
 $sql = "UPDATE testdb3.testtable3 SET username = '$newuser',password = '$newpass' WHERE username = '$olduser' AND password = '$oldpass'";
 
 if(mysqli_query($conn,$sql)){
