@@ -18,17 +18,26 @@
 
   }
 
+
+
   form{
     /*background-color: pink;
     box-sizing:border-box;*/
+
     }
 
   h1, h2{
     text-align: center;
+      font-size:3vh;
+  }
+
+  .theinputs{
+    width:50%;
+
   }
 
   .fadedtext1, .fadedtext2{
-    opacity: 1;
+    opacity: .5;
     /*visibility: hidden;*/
     /*display:none;*/
   }
@@ -50,16 +59,19 @@
     background-color: #ededed; /*#6e2e99;*/
     width:25%;
     height:33%;
-    margin-left: auto;
-    margin-right: auto;
     position:relative;
+    /*margin-left: auto;
+    margin-right: auto;
     top:0%;
-    right:20%;
+    right:20%;*/
+    left:20%;
+    padding:1%;
 
   }
 
   .checkuserbox{
-    text-shadow: 2px 2px 1px black;
+    text-shadow:1px 1px 1px black;
+    font-size:2vh;
     background-color:tan; /*#c7c0a5;*/
     border:white 3px solid;
     width:25%;
@@ -69,13 +81,14 @@
     left:25%;*/
     top:40%;
     right:40%;
+    padding:1%;
   }
 
   .deletebox{
     color:white;
     background-color:black;/*#a86a6c;*/
-    text-shadow:0px 0px 0px white;
-    border:red 3px solid;
+    text-shadow:1px 1px 1px red;
+    border:white 3px solid;
     width:25%;
     height:33%;
     position:absolute;
@@ -83,14 +96,15 @@
     left:62.5%;*/
     top:70%;
     left:55%;
-
+    padding:1%;
   }
 
 
   .updatebox{
-    background-color: #dff7f7;
-    border: 3px solid blue;
-    color:black;
+    color:white;
+    text-shadow: 1px 1px 1px darkblue;
+    background-color: #575757;/*#dff7f7;*/
+    border: 3px solid black;
     position:absolute;
     width:25%;
     height:50%;
@@ -98,6 +112,7 @@
     position:relative;
     left:70%;
     bottom:35%;
+    padding:1%;
     /*visibility: hidden;*/
   }
 
@@ -118,6 +133,10 @@
 
   .clickbutton{
     cursor:pointer;
+    text-align: center;
+    margin-left:auto;
+    margin-right: auto;
+
   }
 
   #passchangeb{
@@ -164,6 +183,45 @@
     width:25%;
     height:25%;
     cursor:pointer;
+  }
+
+
+
+
+
+  @media only screen and (max-width:700px){
+    .accounts{
+      /*display:none;*/
+      position: fixed; /*position: fixed;*/
+      /*float:right;*/
+      left:57%;
+      width:40%;
+    }
+    .createbox{
+        position:static;
+        width:50%;
+
+    }
+
+    #credhelp{
+      position: static;
+
+    }
+
+    .checkuserbox{
+        position:static;
+        width:50%;
+    }
+
+    .updatebox{
+        position:static;
+        width:50%;
+    }
+
+    .deletebox{
+        position:static;
+        width:50%;
+    }
   }
 
   </style>
@@ -305,44 +363,65 @@ function update4User(){
   var newuser = $("#newuser").val();
   var oldpass = $("#oldpass").val();
   var newpass = $("#newpass").val();
+  var nouserissue = false;
 
 
 //alert(olduser + "," + newuser + "," + oldpass + "," + newpass + ","); //newpass.value
 
-//if($("enableuser").prop("checked") && $("enablepass").prop("checked")){
+if($("#enableuser").prop("checked") && $("#enablepass").prop("checked")){
   $.ajax({
     type:'POST',
-    url:'user_update.php?olduser='+olduser+'&newuser='+newuser+ '&oldpass=' + oldpass+ '&newpass='+newpass, //'user_update.php',////
+    url:'user_update.php?olduser='+olduser+'&newuser='+newuser + '&oldpass=' + oldpass+ '&newpass='+newpass + '&nouserissue=' + false, //'user_update.php',////
    /*data:{
       olduser:olduser,
       newuser:newuser,
       oldpass: oldpass,
       newpass:newpass
     },*/
+
+
     success: function(response){
 
       //alert(response);
       $("#updatestatus").html(response);
     }
-  }) }
-/*
-  else{
-    alert("CHECK BOTH PLEASE");
-  }*/
+  })
 
-  /*else if($("enablepass").prop("checked")&& $("enableuser").prop("unchecked")){
-    $.ajax({
-      type:'POST',
-      url:'user_update.php?'
-    })
-  }
+}
 
-  else{
+else if($("#enableuser").prop("checked") && !$("#enablepass").prop("checked")){
+ $.ajax({
+   type:'POST',
+   url:'user_update.php?olduser='+olduser+'&newuser='+newuser + '&oldpass=' + oldpass+ '&newpass='+ oldpass + '&nouserissue=' + false, //'user_update.php',////
 
-  }*/
+   success: function(response){
+     $("#updatestatus").html(response);
+   }
+
+ })
+}
 
 
-//}
+
+else if(!$("#enableuser").prop("checked") && $("#enablepass").prop("checked")){
+  $.ajax({
+    type:'POST',
+    url:'user_update.php?olduser='+olduser+'&newuser='+olduser + '&oldpass=' + oldpass+ '&newpass='+newpass + '&nouserissue=' + true,
+
+    success: function(response){
+      $("#updatestatus").html(response);
+    }
+  })
+}
+
+else{
+  $("#updatestatus").html("ERROR: Please fill out requirements");
+}
+
+
+
+}
+
 
 $(document).ready(function(){
   $("#firstbox").submit(function(e){
@@ -422,13 +501,13 @@ $("#passchangeb").click(function(){
 <div class = "createbox">
   <h1>Enter credentials to verify if account exists </h1>
 
-<div id = "credhelp" title ="At least 5 characters + no more than 15 and no special characters">?</div>
+<div id = "credhelp" title ="Username must be at least 5 characters + no more than 15 and no special characters">?</div>
 <form id = "firstbox" onsubmit="" action = "mainuser_login_test.php" method = "post" > <!--Have the action filled out if you want page redirect to  the php-->
-<div> Add Username: </div>
-<input id = "username" type = "text" name = "username"/>
+<div > Add Username:  </div> <input  class  = "theinputs" id = "username" type = "text" name = "username"/>
+
 <br/>
-<div> Add Password: </div>
-<input id = "password" type = "password" name = "password"/>
+<div > Add Password: </div> <input id = "password" class  = "theinputs" type = "password" name = "password"/>
+
 
 <input class = "clickbutton" type = "submit" value = "Submit" onclick = "usernamecred()"/>
 <div id = "credentialstatus">   </div>
@@ -447,47 +526,45 @@ $("#passchangeb").click(function(){
 
 <div class = "deletebox">
 <form name = "deleteform" method = "post" action = "deleteuser.php" onsubmit="">
-<h2> TIME TO DELETE?</h2>
+<h2> Time to delete account? </h2>
 
-<div>Username:</div> <input type = "text" name = "username3" id ="username3" />
+<div>Username:</div> <input type = "text" name = "username3" id ="username3" class  = "theinputs"/>
 
 <div>Password:</div> <input type = "password" name = "password3" id = "password3" />
-<input class = "clickbutton" type = "submit" value = "DELETE" id = "deletebut"/>
+<input class = "clickbutton" type = "submit" value = "DELETE" id = "deletebut" class  = "theinputs"/>
 </form>
 </div>
 
 
 <div class = "checkuserbox">
   <h2>Does the following username exist?</h2>
-<input type = "text" id = "usernameout"/>
+<input type = "text" id = "usernameout" class  = "theinputs"/>
 <div id = "answer"> </div>
 <button id =  "checksubmit" class = "clickbutton" onclick = "loadUp2AJAX()"> Lets Check</button>
 </div>
 
 
 <div class = "updatebox">
-<h2>Update username or password?  </h2>
- Username:
-<input type = "text" id = "olduser"/>
+<h2>Update username and/or password  </h2>
+Old Username:
+<input type = "text" id = "olduser" class  = "theinputs"/>
 <span>Password:
-<input type = "password" id = "oldpass" /></span>
+<input type = "password" id = "oldpass" class  = "theinputs"/></span>
 
 <br>
 
 <br>
 <!--<input type = "button" id = "userchangeb" value = "Change Username" class = "clickbutton"/> -->
 
-
-<!--
 <span > Change Username  <input type = "checkbox"  id ="enableuser" onclick ="checkCheckbox1()"/> </span>
 <span > Change Password  <input type = "checkbox"  id ="enablepass" onclick ="checkCheckbox2()"/> </span>
--->
 
+<br><br>
 
 <div class = "fadedtext1"> New Username:
-<input type = "text" id = "newuser"  /></div>
+<input type = "text" id = "newuser" class  = "theinputs" disabled /></div>
 <div class = "fadedtext2"> New Password:
-<input type = "password" id ="newpass" /> </div>
+<input type = "password" id ="newpass" class  = "theinputs" disabled/> </div>
 
 <input type = "button"  id = "passchangeb" value = "Update credential(s)" class = "clickbutton" onclick = "update4User()"/>
 <!--<button id = "passchangeb" value = "Change Password" class = "clickbutton">  </button> -->
