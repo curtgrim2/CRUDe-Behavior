@@ -1,5 +1,5 @@
 # CRUD(e) Behavior
-(Note : STILL IN PROGRESS.)
+
 
 Exercise to operate CRUD. 
 
